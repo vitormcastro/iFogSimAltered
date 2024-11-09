@@ -95,7 +95,7 @@ public class DataParser {
 
 	}
 
-	public void parseMobileResourcerData(int resourceID, String datasetReference) throws IOException {
+	public void parseMobileResourcerData(int resourceID, String datasetReference, ArrayList<String>[] resouresOnLevels, int block) throws IOException {
 		// TODO Auto-generated method stub
 
 		Map<Double, Location> tempUserLocationInfo = new HashMap<Double, Location>();
@@ -107,8 +107,7 @@ public class DataParser {
 		while ((row = csvReader.readLine()) != null) {
 			String[] data = row.split(",");
 			try {
-				Location rl = new Location(Double.parseDouble(data[0]), Double.parseDouble(data[1]),
-						References.NOT_SET);
+				Location rl = new Location(Double.parseDouble(data[0]), Double.parseDouble(data[1]), block);
 				if (!tempUserLocationInfo.containsKey(eventTime))
 					tempUserLocationInfo.put(eventTime, rl);
 				else {
@@ -123,14 +122,16 @@ public class DataParser {
 
 		csvReader.close();
 		mobileResourceLocation.put("res_" + resourceID, tempUserLocationInfo);
+		usersLocation.put("res_" + resourceID, tempUserLocationInfo);
 		resourceAndUserToLevel.put("res_" + resourceID, levelID.get("Mobile"));
+		resouresOnLevels[4].add("res_" + resourceID);
 
 	}
 
 	@SuppressWarnings("unchecked")
 	public void parseResourceData() throws NumberFormatException, IOException {
 
-		int numOfLevels = levelID.get("LevelsNum");
+		int numOfLevels = levelID.get("LevelsNum") + 1;
 		ArrayList<String>[] resouresOnLevels = new ArrayList[numOfLevels];
 		for (int i = 0; i < numOfLevels; i++)
 			resouresOnLevels[i] = new ArrayList<String>();
@@ -151,7 +152,7 @@ public class DataParser {
 				String reference = References.dataset_resource_reference;
 				try {
 				    int resourceId = Integer.parseInt(data[0]);
-				    parseMobileResourcerData(resourceId, reference);
+				    parseMobileResourcerData(resourceId, reference, resouresOnLevels, Integer.parseInt(data[3]));
 				} catch (NumberFormatException e) {
 				    System.out.println("Erro: a string não é um número válido.");
 				}

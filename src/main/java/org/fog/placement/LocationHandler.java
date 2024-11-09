@@ -56,9 +56,14 @@ public class LocationHandler {
 		String dataId = getDataIdByInstanceID(resourceId);
 		int resourceLevel=getDataObject().resourceAndUserToLevel.get(dataId);
 		int parentLevel = resourceLevel-1;
+		if(resourceLevel == getDataObject().levelID.get("Mobile")) {
+			parentLevel = 1;
+		}
 		Location resourceLoc;
-		if(resourceLevel!=getDataObject().levelID.get("User"))
+		if(resourceLevel!=getDataObject().levelID.get("User") && resourceLevel!=getDataObject().levelID.get("Mobile"))
 			resourceLoc = getResourceLocationInfo(dataId);
+		else if (resourceLevel!=getDataObject().levelID.get("User"))
+			resourceLoc = getMobileResourceLocationInfo(dataId, time);
 		else
 			resourceLoc = getUserLocationInfo(dataId,time);
 		
@@ -110,6 +115,10 @@ public class LocationHandler {
 	private Location getUserLocationInfo(String dataId, double time) {
 		// TODO Auto-generated method stub
 		return getDataObject().usersLocation.get(dataId).get(time);
+	}
+	
+	private Location getMobileResourceLocationInfo(String dataId, double time) {
+		return getDataObject().mobileResourceLocation.get(dataId).get(time);
 	}
 
 	private Location getResourceLocationInfo(String dataId) {
@@ -187,7 +196,7 @@ public class LocationHandler {
 		// TODO Auto-generated method stub
 		String dataId = getDataIdByInstanceID(instanceId);
 		int instenceLevel=getDataObject().resourceAndUserToLevel.get(dataId);
-		if(instenceLevel==getDataObject().levelID.get("User"))
+		if(instenceLevel== getDataObject().levelID.get("User") || instenceLevel== getDataObject().levelID.get("Mobile") )
 			return true;
 		else
 			return false;

@@ -189,6 +189,15 @@ public class CardiovascularHealthMonitoringApplication {
                 gateway.setLevel(2);
                 fogDevices.add(gateway);
             }
+            
+            for (int i = 0; i < locator.getLevelWiseResources(locator.getLevelID("Mobile")).size(); i++) {
+            	FogDevice gateway = createFogDevice("mFog_" + i, 2800, 4000, 10000, 10000, 0.0, 107.339, 83.4333, MicroserviceFogDevice.FCN);
+                locator.linkDataWithInstance(gateway.getId(), locator.getLevelWiseResources(locator.getLevelID("Mobile")).get(i));
+                gateway.setParentId(locator.determineParent(gateway.getId(), References.SETUP_TIME));
+                gateway.setUplinkLatency(4);
+                gateway.setLevel(2);
+                fogDevices.add(gateway);
+            }
 
         }
     }

@@ -25,6 +25,11 @@ public class Clustering {
         locatorTemp = (LocationHandler) locatorObject.get("locationsInfo");
         FogDevice parentDevice = (FogDevice) CloudSim.getEntity(parentId);
         SiblingListIDs = parentDevice.getChildrenIds();
+        
+        if(VerifyMobileFog(fogId, locatorTemp)) {
+        	return;
+        }
+        
 
         if (SiblingListIDs.size() < 1 || SiblingListIDs.isEmpty()) {
             //System.out.println("The node: " + nodeId + " with parent Id: " + parentId + " does not have any cluster members " + parentDevice.getChildrenIds());
@@ -38,6 +43,8 @@ public class Clustering {
             FogDevice tempNode = (FogDevice) CloudSim.getEntity(tempId);
             SiblingsList.add(tempNode);
         }
+        
+        
 
         double fogNodePositionX = locatorTemp.dataObject.resourceLocationData.get(locatorTemp.instanceToDataId.get(fogId)).latitude;
         double fogNodePositionY = locatorTemp.dataObject.resourceLocationData.get(locatorTemp.instanceToDataId.get(fogId)).longitude;
@@ -47,6 +54,20 @@ public class Clustering {
             if (fogId == fogdevice.getId()) {
                 continue;
             }
+            
+           /* if(fogdevice.getId() == 32) {
+            	System.out.println("Mobile");
+            } else {
+            	System.out.println("Fog ID: " + fogId);	
+            }*/
+              
+            if(VerifyMobileFog(fogdevice.getId(), locatorTemp)) {
+            	continue;
+            }
+            
+            
+            //locator.getDataIdsLevelReferences().get(dataId) == locator.getLevelID("User")
+            
             // To check all siblings except itself
             double tempX = locatorTemp.dataObject.resourceLocationData.get(locatorTemp.instanceToDataId.get(fogdevice.getId())).latitude;
             double tempY = locatorTemp.dataObject.resourceLocationData.get(locatorTemp.instanceToDataId.get(fogdevice.getId())).longitude;
@@ -85,6 +106,13 @@ public class Clustering {
         System.out.println("The Fog Device: " + locatorTemp.instanceToDataId.get(fogId) + " with id: " + fogId + " and parent id: " + parentId +
                 " has these cluster members: " + ((FogDevice) CloudSim.getEntity(fogId)).getClusterMembers());
         return;
+    }
+    
+    private Boolean VerifyMobileFog(int fogId, LocationHandler locatorTemp) {
+    	 
+        String resId = locatorTemp.instanceToDataId.get(fogId);
+        
+        return locatorTemp.getDataIdsLevelReferences().get(resId) == locatorTemp.getLevelID("Mobile"); 
     }
 
     private static boolean calculateInRange(Location loc1, Location loc2, double fogRange) {
