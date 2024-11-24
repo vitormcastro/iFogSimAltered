@@ -69,9 +69,16 @@ public class LocationHandler {
 		
 		int parentInstanceId = References.NOT_SET;	
 		String parentDataId = "";
+		
+		if(resourceLoc == null) {
+			System.out.println("erro!");
+		}
 				
 	
 		if(time<References.INIT_TIME){
+			if(parentLevel == 2) {
+				
+			}
 			for(int i=0; i<getLevelWiseResources(parentLevel).size();i++){
 				Location potentialParentLoc = getResourceLocationInfo(getLevelWiseResources(parentLevel).get(i));
 				if(potentialParentLoc.block==resourceLoc.block) {
@@ -88,6 +95,10 @@ public class LocationHandler {
 		}
 		else
 		{
+			if(parentLevel == 1) {
+				getResourceLocationInfo(dataId).latitude = resourceLoc.latitude;
+				getResourceLocationInfo(dataId).longitude = resourceLoc.longitude;
+			}
 			double minmumDistance = Config.MAX_VALUE;
 			for(int i=0; i<getLevelWiseResources(parentLevel).size();i++){
 				Location potentialParentLoc = getResourceLocationInfo(getLevelWiseResources(parentLevel).get(i));

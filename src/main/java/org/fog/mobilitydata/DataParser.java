@@ -108,22 +108,28 @@ public class DataParser {
 			String[] data = row.split(",");
 			try {
 				Location rl = new Location(Double.parseDouble(data[0]), Double.parseDouble(data[1]), block);
-				if (!tempUserLocationInfo.containsKey(eventTime))
+				if (!tempUserLocationInfo.containsKey(eventTime)) {
 					tempUserLocationInfo.put(eventTime, rl);
+					tempUserLocationInfo.put(-1.0, rl);
+				}
 				else {
-					eventTime = nextMobilisationEvent(eventTime, resourceID);
+					eventTime = nextMobilisationEvent(eventTime, References.DIRECTIONAL_MOBILITY);
 					tempUserLocationInfo.put(eventTime, rl);
 				}
-
+				
+				
 			} catch (NumberFormatException ex) {
 				// System.out.println("Given String is not parsable to double");
 			}
 		}
 
+		resourceLocationData.put("res_" + resourceID, tempUserLocationInfo.get(0.0));
+
 		csvReader.close();
 		mobileResourceLocation.put("res_" + resourceID, tempUserLocationInfo);
 		usersLocation.put("res_" + resourceID, tempUserLocationInfo);
 		resourceAndUserToLevel.put("res_" + resourceID, levelID.get("Mobile"));
+		resouresOnLevels[2].add("res_" + resourceID);
 		resouresOnLevels[4].add("res_" + resourceID);
 
 	}

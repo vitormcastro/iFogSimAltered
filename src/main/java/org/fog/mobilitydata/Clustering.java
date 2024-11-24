@@ -26,9 +26,9 @@ public class Clustering {
         FogDevice parentDevice = (FogDevice) CloudSim.getEntity(parentId);
         SiblingListIDs = parentDevice.getChildrenIds();
         
-        if(VerifyMobileFog(fogId, locatorTemp)) {
+        /*if(VerifyMobileFog(fogId, locatorTemp)) {
         	return;
-        }
+        }*/
         
 
         if (SiblingListIDs.size() < 1 || SiblingListIDs.isEmpty()) {
@@ -62,7 +62,7 @@ public class Clustering {
             }*/
               
             if(VerifyMobileFog(fogdevice.getId(), locatorTemp)) {
-            	continue;
+            	System.out.println("pula");;
             }
             
             
