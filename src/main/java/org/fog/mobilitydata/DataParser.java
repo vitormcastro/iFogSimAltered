@@ -18,7 +18,6 @@ public class DataParser {
 	public Map<Integer, ArrayList<String>> levelwiseResources = new HashMap<Integer, ArrayList<String>>();
 	public Map<String, Integer> resourceAndUserToLevel = new HashMap<String, Integer>();
 	public Map<String, Map<Double, Location>> usersLocation = new HashMap<String, Map<Double, Location>>();
-	public Map<String, Map<Double, Location>> mobileResourceLocation = new HashMap<String, Map<Double, Location>>();
 
 	public DataParser() {
 		File configFile = new File(".\\dataset\\config.properties");
@@ -126,10 +125,8 @@ public class DataParser {
 		resourceLocationData.put("res_" + resourceID, tempUserLocationInfo.get(0.0));
 
 		csvReader.close();
-		mobileResourceLocation.put("res_" + resourceID, tempUserLocationInfo);
 		usersLocation.put("res_" + resourceID, tempUserLocationInfo);
 		resourceAndUserToLevel.put("res_" + resourceID, levelID.get("Mobile"));
-		resouresOnLevels[2].add("res_" + resourceID);
 		resouresOnLevels[4].add("res_" + resourceID);
 
 	}

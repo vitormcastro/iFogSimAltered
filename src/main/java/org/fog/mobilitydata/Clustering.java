@@ -26,10 +26,6 @@ public class Clustering {
         FogDevice parentDevice = (FogDevice) CloudSim.getEntity(parentId);
         SiblingListIDs = parentDevice.getChildrenIds();
         
-        /*if(VerifyMobileFog(fogId, locatorTemp)) {
-        	return;
-        }*/
-        
 
         if (SiblingListIDs.size() < 1 || SiblingListIDs.isEmpty()) {
             //System.out.println("The node: " + nodeId + " with parent Id: " + parentId + " does not have any cluster members " + parentDevice.getChildrenIds());
@@ -55,18 +51,7 @@ public class Clustering {
                 continue;
             }
             
-           /* if(fogdevice.getId() == 32) {
-            	System.out.println("Mobile");
-            } else {
-            	System.out.println("Fog ID: " + fogId);	
-            }*/
-              
-            if(VerifyMobileFog(fogdevice.getId(), locatorTemp)) {
-            	System.out.println("pula");;
-            }
             
-            
-            //locator.getDataIdsLevelReferences().get(dataId) == locator.getLevelID("User")
             
             // To check all siblings except itself
             double tempX = locatorTemp.dataObject.resourceLocationData.get(locatorTemp.instanceToDataId.get(fogdevice.getId())).latitude;
@@ -108,13 +93,6 @@ public class Clustering {
         return;
     }
     
-    private Boolean VerifyMobileFog(int fogId, LocationHandler locatorTemp) {
-    	 
-        String resId = locatorTemp.instanceToDataId.get(fogId);
-        
-        return locatorTemp.getDataIdsLevelReferences().get(resId) == locatorTemp.getLevelID("Mobile"); 
-    }
-
     private static boolean calculateInRange(Location loc1, Location loc2, double fogRange) {
 
         final int R = 6371; // Radius of the earth in Kilometers

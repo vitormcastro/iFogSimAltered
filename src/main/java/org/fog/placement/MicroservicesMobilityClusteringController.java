@@ -134,11 +134,6 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
     @Override
     protected void connectWithLatencies() {
         for (String dataId : locator.getDataIdsLevelReferences().keySet()) {
-        	/*if(dataId.equals("res_130")) {
-        		System.out.println("Chegou");
-        	} else {
-        		System.out.println(dataId);
-        	}*/
             for (int instenceId : locator.getInstenceDataIdReferences().keySet()) {
                 if (locator.getInstenceDataIdReferences().get(instenceId).equals(dataId)) {
                     FogDevice fogDevice = getFogDeviceById(instenceId);

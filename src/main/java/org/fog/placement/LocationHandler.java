@@ -62,23 +62,14 @@ public class LocationHandler {
 		Location resourceLoc;
 		if(resourceLevel!=getDataObject().levelID.get("User") && resourceLevel!=getDataObject().levelID.get("Mobile"))
 			resourceLoc = getResourceLocationInfo(dataId);
-		else if (resourceLevel!=getDataObject().levelID.get("User"))
-			resourceLoc = getMobileResourceLocationInfo(dataId, time);
 		else
 			resourceLoc = getUserLocationInfo(dataId,time);
 		
 		int parentInstanceId = References.NOT_SET;	
 		String parentDataId = "";
-		
-		if(resourceLoc == null) {
-			System.out.println("erro!");
-		}
 				
 	
 		if(time<References.INIT_TIME){
-			if(parentLevel == 2) {
-				
-			}
 			for(int i=0; i<getLevelWiseResources(parentLevel).size();i++){
 				Location potentialParentLoc = getResourceLocationInfo(getLevelWiseResources(parentLevel).get(i));
 				if(potentialParentLoc.block==resourceLoc.block) {
@@ -128,9 +119,9 @@ public class LocationHandler {
 		return getDataObject().usersLocation.get(dataId).get(time);
 	}
 	
-	private Location getMobileResourceLocationInfo(String dataId, double time) {
-		return getDataObject().mobileResourceLocation.get(dataId).get(time);
-	}
+	//private Location getMobileResourceLocationInfo(String dataId, double time) {
+	//	return getDataObject().mobileResourceLocation.get(dataId).get(time);
+	//}
 
 	private Location getResourceLocationInfo(String dataId) {
 		// TODO Auto-generated method stub
@@ -207,7 +198,7 @@ public class LocationHandler {
 		// TODO Auto-generated method stub
 		String dataId = getDataIdByInstanceID(instanceId);
 		int instenceLevel=getDataObject().resourceAndUserToLevel.get(dataId);
-		if(instenceLevel== getDataObject().levelID.get("User") || instenceLevel== getDataObject().levelID.get("Mobile") )
+		if(instenceLevel== getDataObject().levelID.get("User") || instenceLevel== getDataObject().levelID.get("Mobile"))
 			return true;
 		else
 			return false;
