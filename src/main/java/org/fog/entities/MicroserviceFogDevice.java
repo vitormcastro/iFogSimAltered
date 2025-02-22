@@ -363,7 +363,7 @@ public class MicroserviceFogDevice extends FogDevice {
             }
             placementString.append("\n");
         }
-        System.out.println(placementString.toString());
+        //System.out.println(placementString.toString());
         for (int clientDevice : serviceDicovery.keySet()) {
             for (Pair serviceData : serviceDicovery.get(clientDevice)) {
                 if (MicroservicePlacementConfig.SIMULATION_MODE == "DYNAMIC") {

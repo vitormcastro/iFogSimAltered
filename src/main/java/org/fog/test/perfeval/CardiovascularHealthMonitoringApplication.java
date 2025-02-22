@@ -62,7 +62,7 @@ public class CardiovascularHealthMonitoringApplication {
     static boolean CLOUD = false;
 
     static double SENSOR_TRANSMISSION_TIME = 10;
-    static int numberOfMobileUser = 5;
+    static int numberOfMobileUser = 15;
 
     //cluster link latency 2ms
     static Double clusterLatency = 2.0;
@@ -70,7 +70,7 @@ public class CardiovascularHealthMonitoringApplication {
     // TODO: 8/8/2021  not required for this scenario
     // if random mobility generator for users is True, new random dataset will be created for each user
     static boolean randomMobility_generator = true; // To use random datasets
-    static boolean renewDataset = false; // To overwrite existing random datasets
+    static boolean renewDataset = true; // To overwrite existing random datasets
     static List<Integer> clusteringLevels = new ArrayList<Integer>(); // The selected fog layers for clustering
 
 
@@ -102,6 +102,7 @@ public class CardiovascularHealthMonitoringApplication {
             if (randomMobility_generator) {
                 datasetReference = References.dataset_random;
                 createRandomMobilityDatasets(References.random_walk_mobility_model, datasetReference, renewDataset);
+                createRandomMobilityResourceDatasets(References.random_walk_mobility_model,References.dataset_resource_reference, renewDataset);
             }
 
             createMobileUser(broker.getId(), application, datasetReference);
@@ -147,6 +148,14 @@ public class CardiovascularHealthMonitoringApplication {
     private static void createRandomMobilityDatasets(int mobilityModel, String datasetReference, boolean renewDataset) throws IOException, ParseException {
         RandomMobilityGenerator randMobilityGenerator = new RandomMobilityGenerator();
         for (int i = 0; i < numberOfMobileUser; i++) {
+
+            randMobilityGenerator.createRandomData(mobilityModel, i + 1, datasetReference, renewDataset);
+        }
+    }
+    
+    private static void createRandomMobilityResourceDatasets(int mobilityModel, String datasetReference, boolean renewDataset) throws IOException, ParseException {
+        RandomMobilityGenerator randMobilityGenerator = new RandomMobilityGenerator();
+        for (int i = 0; i < 150; i++) {
 
             randMobilityGenerator.createRandomData(mobilityModel, i + 1, datasetReference, renewDataset);
         }

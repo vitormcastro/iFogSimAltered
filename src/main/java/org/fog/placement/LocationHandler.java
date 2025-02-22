@@ -176,7 +176,7 @@ public class LocationHandler {
 	public boolean isCloud(int instanceID) {
 		// TODO Auto-generated method stub
 		String dataId = getDataIdByInstanceID(instanceID);
-		System.out.println(dataId);
+		//System.out.println(dataId);
 		int instenceLevel=getDataObject().resourceAndUserToLevel.get(dataId);
 		if(instenceLevel==getDataObject().levelID.get("Cloud"))
 			return true;

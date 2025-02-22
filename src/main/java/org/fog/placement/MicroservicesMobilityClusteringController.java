@@ -357,6 +357,13 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
                 }
             }
         }
+        else {
+        	System.out.println("Here!");
+        	List<Integer> childs = mobileDevice.getChildrenIds();
+        	if(childs != null && !childs.isEmpty()) {
+        		System.out.println("Here!");
+        	}
+        }
         
 
         
