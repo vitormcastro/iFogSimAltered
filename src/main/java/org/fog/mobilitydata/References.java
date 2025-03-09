@@ -10,8 +10,8 @@ public class References {
 	public static final int RANDOM_MOBILITY = 2;
 
 	// Reference geographical information to create random mobility pattern for mobile users
-	public static final double lat_reference = -37.81349283433532;
-	public static final double long_reference = 144.952370512958;
+	public static final double lat_reference = -23.64462466560574;//-37.81349283433532;
+	public static final double long_reference = -46.52839384444206;//144.952370512958;
 
 	// Reference dataset filename to store and retrieve users positions
 	// ".\\dataset\\usersLocation-melbCBD_"
@@ -24,4 +24,5 @@ public class References {
 	public static double MinMobilitySpeed = 1; //
 	public static double MaxMobilitySpeed = 2; //
 	public static double environmentLimit = 6371; // shows the maximum latitude and longitude of the environment. Currently it is set based on radius of the Earth (6371 KM)
+	public static final int movementQuantity = 200; 
 }

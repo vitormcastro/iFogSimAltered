@@ -44,18 +44,18 @@ public class RandomMobilityGenerator {
     }
 
     private static boolean positionInRangeCheck(float x, float y) {
-        float topLeftXEnv = -37.813046f;
-        float topLeftYEnv = 144.951380f;
+        float topLeftXEnv = -23.64318246687682f;//-37.813046f; //-23.644725495440547, -46.530513579350696
+        float topLeftYEnv = -46.529236847891355f;//144.951380f;//-23.64318246687682, -46.529236847891355
 
-        float downLeftXEnv = -37.821229f;
-        float downLeftYEnv = 144.955039f;
+        float downLeftXEnv = -23.644725495440547f;//-37.821229f;
+        float downLeftYEnv = -46.530513579350696f;//144.955039f;
 
 
-        float topRightXEnv = -37.807397f;
-        float topRightYEnv = 144.971062f;
+        float topRightXEnv = -23.64404243727732f;//-37.807397f; //-23.64404243727732, -46.526034290356314
+        float topRightYEnv = -46.526034290356314f;//144.971062f; -23.646106343173873, -46.52773481080949
 
-        float downRightXEnv = -37.815136f;
-        float downRightYEnv = 144.975044f;
+        float downRightXEnv = -23.646106343173873f;//-37.815136f;
+        float downRightYEnv = -46.52773481080949f;//144.975044f;
 
         final Polygon2D polygon = new Polygon2D();
         polygon.addPoint(topLeftXEnv, topLeftYEnv);
@@ -80,16 +80,16 @@ public class RandomMobilityGenerator {
         if (exists && renewDataset) {
             System.out.println("The dataset: " + fileName + " is being overwritten.");
             if (mobilityModel == References.random_walk_mobility_model) {
-                MobilityPositionInitiator(References.random_walk_mobility_model, 100, user_index);
+                MobilityPositionInitiator(References.random_walk_mobility_model, References.movementQuantity, user_index);
             } else if (mobilityModel == References.random_waypoint_mobility_model) {
-                MobilityPositionInitiator(References.random_waypoint_mobility_model, 100, user_index);
+                MobilityPositionInitiator(References.random_waypoint_mobility_model, References.movementQuantity, user_index);
             }
         } else if (!exists) {
             System.out.println("The dataset: " + fileName + " is going to be created for the first time.");
             if (mobilityModel == References.random_walk_mobility_model) {
-                MobilityPositionInitiator(References.random_walk_mobility_model, 100, user_index);
+                MobilityPositionInitiator(References.random_walk_mobility_model, References.movementQuantity, user_index);
             } else if (mobilityModel == References.random_waypoint_mobility_model) {
-                MobilityPositionInitiator(References.random_waypoint_mobility_model, 100, user_index);
+                MobilityPositionInitiator(References.random_waypoint_mobility_model, References.movementQuantity, user_index);
             }
         } else {
             System.out.println("The dataset: " + fileName + " exists already.");

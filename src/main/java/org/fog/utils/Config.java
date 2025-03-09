@@ -3,7 +3,7 @@ package main.java.org.fog.utils;
 public class Config {
 
 	public static final double RESOURCE_MGMT_INTERVAL = 100;
-	public static int MAX_SIMULATION_TIME = 300;
+	public static int MAX_SIMULATION_TIME = 1000;
 	public static int RESOURCE_MANAGE_INTERVAL = 100;
 	public static String FOG_DEVICE_ARCH = "x86";
 	public static String FOG_DEVICE_OS = "Linux";
@@ -19,7 +19,7 @@ public class Config {
 	public static boolean ENABLE_STATIC_CLUSTERING = false;
 	//Dynamic Clustering
 	public static boolean ENABLE_DYNAMIC_CLUSTERING = true;
-	public static double Node_Communication_RANGE = 300.0; // In terms of meter
+	public static double Node_Communication_RANGE = 150.0; // In terms of meter
 	public static double clusteringLatency = 2.0; //milisecond
 
 	public static final int TRANSMISSION_START_DELAY = 50;

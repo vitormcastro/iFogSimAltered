@@ -139,7 +139,7 @@ public class DataParser {
 		for (int i = 0; i < numOfLevels; i++)
 			resouresOnLevels[i] = new ArrayList<String>();
 
-		BufferedReader csvReader = new BufferedReader(new FileReader(".\\dataset\\edgeResources-melbCBD-2Mps.csv"));
+		BufferedReader csvReader = new BufferedReader(new FileReader(".\\dataset\\edgeResources-UFABCDataset.csv"));
 		String row;
 		while ((row = csvReader.readLine()) != null) {
 			String[] data = row.split(",");
@@ -152,7 +152,7 @@ public class DataParser {
 				resourceAndUserToLevel.put("res_" + data[0], Integer.parseInt(data[4]));
 				resourceLocationData.put("res_" + data[0], rl);
 			} else if (data[6].equals("MOB")) {
-				String reference = References.dataset_random;
+				String reference = ".\\dataset\\mFogMoveLocation_";
 				try {
 				    int resourceId = Integer.parseInt(data[0]);
 				    parseMobileResourcerData(resourceId, reference, resouresOnLevels, Integer.parseInt(data[3]));
