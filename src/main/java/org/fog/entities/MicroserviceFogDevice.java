@@ -468,7 +468,7 @@ public class MicroserviceFogDevice extends FogDevice {
         JSONObject object = (JSONObject) ev.getData();
         AppModule appModule = (AppModule) object.get("module");
         Application app = (Application) object.get("application");
-        System.out.println(CloudSim.clock() + getName() + " is receiving " + appModule.getName());
+        System.out.println(CloudSim.clock() + " " + getName() + " is receiving " + appModule.getName());
 
         sendNow(getId(), FogEvents.APP_SUBMIT, app);
         sendNow(getId(), FogEvents.LAUNCH_MODULE, appModule);

@@ -15,6 +15,8 @@ import main.java.org.fog.mobilitydata.References;
 import main.java.org.fog.utils.Config;
 import main.java.org.fog.utils.FogEvents;
 import main.java.org.fog.utils.MigrationDelayMonitor;
+import main.java.org.fog.utils.TimeKeeper;
+
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
@@ -101,6 +103,8 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
                 printCostDetails();
                 printNetworkUsageDetails();
                 printMigrationDelayDetails();
+                printQoSDetails();
+                printPacketLossCount();
                 System.exit(0);
                 break;
             default:
@@ -109,6 +113,24 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
         }
     }
 
+    private void printPacketLossCount() {
+    	 System.out.println("=========================================");
+         System.out.println("APPLICATION PACKET LOSS COUNT");
+         System.out.println("=========================================");
+         
+         
+         
+         for(String key : applications.keySet()) {
+        	 Application app = applications.get(key);
+        	 int tp = app.GetTotalPacket();
+        	 int plc = app.GetPacketLossCount();
+        	 
+        	 double percentPacketLoss = ((double)plc / tp)*100;
+        	 
+        	 System.out.println("Aplication: " + key + " - Packet loss count: " + percentPacketLoss + "%");
+         }
+    }
+    
     private void printMigrationDelayDetails() {
         // TODO Auto-generated method stub
         System.out.println("Total time required for module migration = " + MigrationDelayMonitor.getMigrationDelay());

@@ -23,6 +23,10 @@ public class Application {
 	private String appId;
 	private int userId;
 	private GeoCoverage geoCoverage;
+	
+	private int packetLossCount;
+	
+	private int totalPacket;
 
 	/**
 	 * List of application modules in the application
@@ -171,6 +175,22 @@ public class Application {
 			getEdgeMap().put(edge.getTupleType(), edge);
 		}
 	}
+	
+	public int GetPacketLossCount() {
+		return packetLossCount;
+	}
+	
+	public void SetPacketLossCount(int value) {
+		packetLossCount = value;
+	}
+	
+	public int GetTotalPacket() {
+		return totalPacket;
+	}
+	
+	public void SetTotalPacket(int value) {
+		totalPacket = value;
+	}
 
 	/**
 	 * Search and return an application module by its module name
@@ -250,7 +270,14 @@ public class Application {
 
 						tuples.add(tuple);
 					}
+				} else {
+					int plc = GetPacketLossCount();
+					plc++;
+					SetPacketLossCount(plc);			
 				}
+				int tp = GetTotalPacket();
+				tp++;
+				SetTotalPacket(tp);
 			}
 		}
 		return tuples;

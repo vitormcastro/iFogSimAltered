@@ -91,6 +91,12 @@ public class LocationHandler {
 				getResourceLocationInfo(dataId).longitude = resourceLoc.longitude;
 			}
 			double minmumDistance = Config.MAX_VALUE;
+			
+			int parentLevelMobile = -1;
+			
+			if(parentLevel == 2) {
+				parentLevelMobile = 4;
+			}
 			for(int i=0; i<getLevelWiseResources(parentLevel).size();i++){
 				Location potentialParentLoc = getResourceLocationInfo(getLevelWiseResources(parentLevel).get(i));
 				
@@ -99,6 +105,18 @@ public class LocationHandler {
 						parentDataId = getLevelWiseResources(parentLevel).get(i);
 						minmumDistance = distance;
 					}
+			}
+			
+			if(parentLevelMobile != -1) {
+				for(int i=0; i<getLevelWiseResources(parentLevelMobile).size();i++){
+					Location potentialParentLoc = getResourceLocationInfo(getLevelWiseResources(parentLevelMobile).get(i));
+					
+					double distance = calculateDistance(resourceLoc, potentialParentLoc);
+						if(distance<minmumDistance){
+							parentDataId = getLevelWiseResources(parentLevelMobile).get(i);
+							minmumDistance = distance;
+						}
+				}
 			}
 			
 			for(int parentIdIterator: instanceToDataId.keySet())
