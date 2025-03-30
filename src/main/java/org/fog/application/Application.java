@@ -25,8 +25,8 @@ public class Application {
 	private GeoCoverage geoCoverage;
 	
 	private int packetLossCount;
-	
 	private int totalPacket;
+	private Map<String,Integer> modulePacketLossCount;
 
 	/**
 	 * List of application modules in the application
@@ -161,6 +161,7 @@ public class Application {
 		setGeoCoverage(null);
 		setLoops(new ArrayList<AppLoop>());
 		setEdgeMap(new HashMap<String, AppEdge>());
+		SetModulePacketLossCount(new HashMap<String,Integer>());
 	}
 	
 	public Application(String appId, List<AppModule> modules,
@@ -174,6 +175,7 @@ public class Application {
 		for(AppEdge edge : edges){
 			getEdgeMap().put(edge.getTupleType(), edge);
 		}
+		SetModulePacketLossCount(new HashMap<String,Integer>());
 	}
 	
 	public int GetPacketLossCount() {
@@ -192,6 +194,14 @@ public class Application {
 		totalPacket = value;
 	}
 
+	public Map<String,Integer> GetModulePacketLossCount(){
+		return modulePacketLossCount;
+	}
+	
+	public void SetModulePacketLossCount(Map<String, Integer> value) {
+		modulePacketLossCount = value;
+	}
+	
 	/**
 	 * Search and return an application module by its module name
 	 * @param name the module name to be returned
@@ -273,7 +283,14 @@ public class Application {
 				} else {
 					int plc = GetPacketLossCount();
 					plc++;
-					SetPacketLossCount(plc);			
+					SetPacketLossCount(plc);
+					
+					if(!GetModulePacketLossCount().containsKey(moduleName)) {
+						GetModulePacketLossCount().put(moduleName, 0);
+					}
+					
+					GetModulePacketLossCount().put(moduleName, GetModulePacketLossCount().getOrDefault(moduleName, 0) +1);
+					
 				}
 				int tp = GetTotalPacket();
 				tp++;
