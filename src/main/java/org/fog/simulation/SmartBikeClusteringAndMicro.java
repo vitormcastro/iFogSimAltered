@@ -60,8 +60,8 @@ public class SmartBikeClusteringAndMicro {
     static Double clusterLatency = 2.0;
     
  // if random mobility generator for users is True, new random dataset will be created for each user
-    static boolean randomMobility_generator = false; // To use random datasets
-    static boolean renewDataset = false; // To overwrite existing random datasets
+    static boolean randomMobility_generator = true; // To use random datasets
+    static boolean renewDataset = true; // To overwrite existing random datasets
     static List<Integer> clusteringLevels = new ArrayList<Integer>(); // The selected fog layers for clustering
 
     public static void main(String[] args) {

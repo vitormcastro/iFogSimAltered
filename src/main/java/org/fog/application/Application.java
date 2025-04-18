@@ -27,7 +27,7 @@ public class Application {
 	private int packetLossCount;
 	private int totalPacket;
 	private Map<String,Integer> modulePacketLossCount;
-
+	private Map<String,Integer> modulePacketTotalCount;
 	/**
 	 * List of application modules in the application
 	 */
@@ -162,6 +162,7 @@ public class Application {
 		setLoops(new ArrayList<AppLoop>());
 		setEdgeMap(new HashMap<String, AppEdge>());
 		SetModulePacketLossCount(new HashMap<String,Integer>());
+		SetModulePacketTotalCount(new HashMap<String,Integer>());
 	}
 	
 	public Application(String appId, List<AppModule> modules,
@@ -176,6 +177,7 @@ public class Application {
 			getEdgeMap().put(edge.getTupleType(), edge);
 		}
 		SetModulePacketLossCount(new HashMap<String,Integer>());
+		SetModulePacketTotalCount(new HashMap<String,Integer>());
 	}
 	
 	public int GetPacketLossCount() {
@@ -200,6 +202,14 @@ public class Application {
 	
 	public void SetModulePacketLossCount(Map<String, Integer> value) {
 		modulePacketLossCount = value;
+	}
+	
+	public Map<String,Integer> GetModulePacketTotalCount(){
+		return modulePacketTotalCount;
+	}
+	
+	public void SetModulePacketTotalCount(Map<String,Integer> value) {
+		modulePacketTotalCount = value;
 	}
 	
 	/**
@@ -295,6 +305,12 @@ public class Application {
 				int tp = GetTotalPacket();
 				tp++;
 				SetTotalPacket(tp);
+				
+				if(!GetModulePacketTotalCount().containsKey(moduleName)) {
+					GetModulePacketTotalCount().put(moduleName, 0);
+				}
+				
+				GetModulePacketTotalCount().put(moduleName, GetModulePacketTotalCount().getOrDefault(moduleName, 0) +1);
 			}
 		}
 		return tuples;
