@@ -50,6 +50,55 @@ public class LocationHandler {
 	    return Math.sqrt(distance);
 	}
 	
+	
+	/**
+	 * Checks if a child node is within the maximum communication range of its parent node.
+	 */
+	public Boolean IsNodeInParentRange(int resourceId, int parentResourceId, double time) {
+		if(time == References.INIT_TIME) {
+			return false;
+		}
+		
+		String dataId = getDataIdByInstanceID(resourceId);
+		int resourceLevel=getDataObject().resourceAndUserToLevel.get(dataId);
+		int parentLevel = resourceLevel-1;
+		if(resourceLevel == getDataObject().levelID.get("Mobile")) {
+			parentLevel = 1;
+		}
+		//Skip distance check for 0 or -1 parents
+		if(parentLevel == 0 || parentLevel == -1) {
+			return true;
+		}
+		
+		Location resourceLoc;
+		if(resourceLevel!=getDataObject().levelID.get("User") && resourceLevel!=getDataObject().levelID.get("Mobile"))
+			resourceLoc = getResourceLocationInfo(dataId);
+		else
+			resourceLoc = getUserLocationInfo(dataId,time);
+		
+		String parentDataId = getDataIdByInstanceID(parentResourceId);
+		int parentResourceLevel=getDataObject().resourceAndUserToLevel.get(dataId);
+		Location parentResourceLoc = null;
+		
+		try {
+			if(parentResourceLevel!=getDataObject().levelID.get("User") && parentResourceLevel!=getDataObject().levelID.get("Mobile"))
+				parentResourceLoc = getResourceLocationInfo(parentDataId);
+			else
+				parentResourceLoc = getUserLocationInfo(parentDataId,time);
+
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		if(parentResourceLoc == null) {
+			return false;
+		}
+		
+	    double distance = calculateDistance(resourceLoc, parentResourceLoc);
+	    
+	    return distance < (Config.MIN_COMMUNICATION_RANGE/1000);
+	}
 
 	public int determineParent(int resourceId, double time) {
 		// TODO Auto-generated method stub
@@ -127,6 +176,14 @@ public class LocationHandler {
 				}
 			}
 			
+			if(minmumDistance == Config.MAX_COMMUNICATION_RANGE) {
+				System.out.println("não foi possivel encontrar um parente");
+			}
+			
+		}
+		
+		if(parentLevel != 2 && parentInstanceId == -1) {
+			System.out.println("não foi possivel encontrar um parente");
 		}
 		
 		return parentInstanceId;	

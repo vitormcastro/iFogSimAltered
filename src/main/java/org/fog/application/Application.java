@@ -302,15 +302,13 @@ public class Application {
 					GetModulePacketLossCount().put(moduleName, GetModulePacketLossCount().getOrDefault(moduleName, 0) +1);
 					
 				}
-				int tp = GetTotalPacket();
-				tp++;
-				SetTotalPacket(tp);
 				
-				if(!GetModulePacketTotalCount().containsKey(moduleName)) {
+				
+				/*if(!GetModulePacketTotalCount().containsKey(moduleName)) {
 					GetModulePacketTotalCount().put(moduleName, 0);
 				}
 				
-				GetModulePacketTotalCount().put(moduleName, GetModulePacketTotalCount().getOrDefault(moduleName, 0) +1);
+				GetModulePacketTotalCount().put(moduleName, GetModulePacketTotalCount().getOrDefault(moduleName, 0) +1)*/
 			}
 		}
 		return tuples;
