@@ -778,6 +778,10 @@ public class FogDevice extends PowerDatacenter {
                 double newAverage = (currentAverage * currentCount + delay) / (currentCount + 1);
                 TimeKeeper.getInstance().getLoopIdToCurrentAverage().put(loop.getLoopId(), newAverage);
                 TimeKeeper.getInstance().getLoopIdToCurrentNum().put(loop.getLoopId(), currentCount + 1);
+                
+                int tp = app.GetTotalPacket();
+				tp++;
+				app.SetTotalPacket(tp);
                 break;
             }
         }

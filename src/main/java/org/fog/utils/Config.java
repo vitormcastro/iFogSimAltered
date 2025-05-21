@@ -19,6 +19,10 @@ public class Config {
 	public static boolean ENABLE_STATIC_CLUSTERING = false;
 	//Dynamic Clustering
 	public static boolean ENABLE_DYNAMIC_CLUSTERING = true;
+	//Maximum communication range
+	public static double MAX_COMMUNICATION_RANGE = 300;
+	//Minimum communication range
+	public static double MIN_COMMUNICATION_RANGE = 100;
 	public static double Node_Communication_RANGE = 50.0; // In terms of meter
 	public static double clusteringLatency = 2.0; //milisecond
 
