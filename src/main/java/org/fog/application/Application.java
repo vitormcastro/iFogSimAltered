@@ -295,15 +295,11 @@ public class Application {
 					plc++;
 					SetPacketLossCount(plc);
 					
-					int tp = GetTotalPacket();
-					tp++;
-					SetTotalPacket(tp);
-					
-					/*if(!GetModulePacketLossCount().containsKey(moduleName)) {
+					if(!GetModulePacketLossCount().containsKey(moduleName)) {
 						GetModulePacketLossCount().put(moduleName, 0);
 					}
 					
-					GetModulePacketLossCount().put(moduleName, GetModulePacketLossCount().getOrDefault(moduleName, 0) +1);*/
+					GetModulePacketLossCount().put(moduleName, GetModulePacketLossCount().getOrDefault(moduleName, 0) +1);
 					
 				}
 				
