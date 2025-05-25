@@ -204,67 +204,91 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
         FogDevice fogDevice = (FogDevice) ev.getData();
         FogDevice prevParent = getFogDeviceById(parentReference.get(fogDevice.getId()));
         
-        if(!locator.IsNodeInParentRange(fogDevice.getId(), prevParent.getId(), CloudSim.clock())) {
+        if(prevParent == null || !locator.IsNodeInParentRange(fogDevice.getId(), prevParent.getId(), CloudSim.clock())) {
         	
         	FogDevice newParent = getFogDeviceById(locator.determineParent(fogDevice.getId(), CloudSim.clock()));
-            System.out.println(CloudSim.clock() + " Starting Mobility Management for " + fogDevice.getName());
-            parentReference.put(fogDevice.getId(), newParent.getId());
-            Map<String, Integer> migratingModules = new HashMap<>(); // migrating module _> it's device (can be preParent or  device the same cluster
-            setNewOrchestratorNode(fogDevice,newParent);
+        	
+        	if(newParent != null) {
+        		System.out.println(CloudSim.clock() + " Starting Mobility Management for " + fogDevice.getName());
+                parentReference.put(fogDevice.getId(), newParent.getId());
+                Map<String, Integer> migratingModules = new HashMap<>(); // migrating module _> it's device (can be preParent or  device the same cluster
+                setNewOrchestratorNode(fogDevice,newParent);
 
-            if (prevParent.getId() != newParent.getId()) {
-                //printFogDeviceChildren(newParent.getId());
-                //printFogDeviceChildren(prevParent.getId());
+                if (prevParent == null || prevParent.getId() != newParent.getId()) {
+                    //printFogDeviceChildren(newParent.getId());
+                    //printFogDeviceChildren(prevParent.getId());
 
-                //common ancestor policy
-                List<Integer> newParentPath = getPathsToCloud(newParent.getId());
-                List<Integer> prevParentPath = getPathsToCloud(prevParent.getId());
-                int commonAncestor = determineAncestor(newParentPath, prevParentPath);
+                	int commonAncestor = -1;
+                	
+                	if(prevParent != null) {
+                		//common ancestor policy
+                        List<Integer> newParentPath = getPathsToCloud(newParent.getId());
+                        List<Integer> prevParentPath = getPathsToCloud(prevParent.getId());
+                        commonAncestor = determineAncestor(newParentPath, prevParentPath);
+                	}                             
 
+                    fogDevice.setParentId(newParent.getId());
+                    System.out.println("Child " + fogDevice.getName() + "\t----->\tParent " + newParent.getName());
+                    newParent.getChildToLatencyMap().put(fogDevice.getId(), fogDevice.getUplinkLatency());
+                    newParent.addChild(fogDevice.getId());
+                    
+                    if(prevParent != null) {
+                    	 prevParent.removeChild(fogDevice.getId());
+                    }                                       
 
-                fogDevice.setParentId(newParent.getId());
-                System.out.println("Child " + fogDevice.getName() + "\t----->\tParent " + newParent.getName());
-                newParent.getChildToLatencyMap().put(fogDevice.getId(), fogDevice.getUplinkLatency());
-                newParent.addChild(fogDevice.getId());
-                prevParent.removeChild(fogDevice.getId());
+                    for (String applicationName : fogDevice.getActiveApplications()) {
 
-                for (String applicationName : fogDevice.getActiveApplications()) {
+                        migratingModules = getModulesToMigrate(fogDevice, commonAncestor, applicationName);
+                        HashMap<String, Double> upDelays = new HashMap<>(); // per migrating module
+                        HashMap<String, Double> downDelays = new HashMap<>(); // per migrating module
 
-                    migratingModules = getModulesToMigrate(fogDevice, commonAncestor, applicationName);
-                    HashMap<String, Double> upDelays = new HashMap<>(); // per migrating module
-                    HashMap<String, Double> downDelays = new HashMap<>(); // per migrating module
+                        for (String moduleName : migratingModules.keySet()) {
 
-                    for (String moduleName : migratingModules.keySet()) {
+                            double upDelay = getUpDelay(migratingModules.get(moduleName), commonAncestor, applications.get(applicationName).getModuleByName(moduleName));
+                            double downDelay = getDownDelay(newParent.getId(), commonAncestor, applications.get(applicationName).getModuleByName(moduleName));
+                            upDelays.put(moduleName, upDelay);
+                            downDelays.put(moduleName, downDelay);
+                            JSONObject jsonSend = new JSONObject();
+                            jsonSend.put("module", applications.get(applicationName).getModuleByName(moduleName));
+                            jsonSend.put("delay", upDelay);
 
-                        double upDelay = getUpDelay(migratingModules.get(moduleName), commonAncestor, applications.get(applicationName).getModuleByName(moduleName));
-                        double downDelay = getDownDelay(newParent.getId(), commonAncestor, applications.get(applicationName).getModuleByName(moduleName));
-                        upDelays.put(moduleName, upDelay);
-                        downDelays.put(moduleName, downDelay);
-                        JSONObject jsonSend = new JSONObject();
-                        jsonSend.put("module", applications.get(applicationName).getModuleByName(moduleName));
-                        jsonSend.put("delay", upDelay);
+                            JSONObject jsonReceive = new JSONObject();
+                            jsonReceive.put("module", new AppModule(applications.get(applicationName).getModuleByName(moduleName)));
+                            jsonReceive.put("delay", downDelay);
+                            jsonReceive.put("application", applications.get(applicationName));
 
-                        JSONObject jsonReceive = new JSONObject();
-                        jsonReceive.put("module", new AppModule(applications.get(applicationName).getModuleByName(moduleName)));
-                        jsonReceive.put("delay", downDelay);
-                        jsonReceive.put("application", applications.get(applicationName));
+                            send(migratingModules.get(moduleName), upDelay, FogEvents.MODULE_SEND, jsonSend);
+                            send(newParent.getId(), downDelay, FogEvents.MODULE_RECEIVE, jsonReceive);
+                            
+                            if(prevParent != null) {
+                            	System.out.println("Migrating " + moduleName + " from " + prevParent.getName() + " to " + newParent.getName());
+                            } else {
+                            	System.out.println("Migrating " + moduleName + " to " + newParent.getName());
+                            }
+                            	
+                            
+                            
+                        }
 
-                        send(migratingModules.get(moduleName), upDelay, FogEvents.MODULE_SEND, jsonSend);
-                        send(newParent.getId(), downDelay, FogEvents.MODULE_RECEIVE, jsonReceive);
-                        System.out.println("Migrating " + moduleName + " from " + prevParent.getName() + " to " + newParent.getName());
+                        serviceDiscoveryUpdate(fogDevice, migratingModules, applicationName, newParent.getId(), upDelays, downDelays);
+                        for (String moduleName : migratingModules.keySet()) {
+                            //because modules are moved to next parent
+                            perClientDevicePrs.get(fogDevice.getId()).get(applicationName).getPlacedMicroservices().put(moduleName, newParent.getId());
+                        }
                     }
 
-                    serviceDiscoveryUpdate(fogDevice, migratingModules, applicationName, newParent.getId(), upDelays, downDelays);
-                    for (String moduleName : migratingModules.keySet()) {
-                        //because modules are moved to next parent
-                        perClientDevicePrs.get(fogDevice.getId()).get(applicationName).getPlacedMicroservices().put(moduleName, newParent.getId());
-                    }
+                    // = get
+                    //printFogDeviceChildren(newParent.getId());
+                    //printFogDeviceChildren(prevParent.getId());
                 }
-
-                // = get
-                //printFogDeviceChildren(newParent.getId());
-                //printFogDeviceChildren(prevParent.getId());
-            }
+        	} else {
+        		 parentReference.put(fogDevice.getId(), -1);
+        		 if(prevParent != null) {
+                	 prevParent.removeChild(fogDevice.getId());
+                }    
+        	}
+        	
+            
         }      
 
         updateRoutingTable(fogDevice);

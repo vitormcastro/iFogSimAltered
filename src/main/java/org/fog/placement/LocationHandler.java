@@ -141,6 +141,10 @@ public class LocationHandler {
 			}
 			double minmumDistance = Config.MAX_VALUE;
 			
+			if(parentLevel == 2) {
+				minmumDistance = Config.MAX_COMMUNICATION_RANGE / 1000;
+			}
+			
 			int parentLevelMobile = -1;
 			
 			if(parentLevel == 2) {
@@ -182,7 +186,7 @@ public class LocationHandler {
 			
 		}
 		
-		if(parentLevel != 2 && parentInstanceId == -1) {
+		if(parentLevel == 2 && parentInstanceId == -1) {
 			System.out.println("não foi possivel encontrar um parente");
 		}
 		

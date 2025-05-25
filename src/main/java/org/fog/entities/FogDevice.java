@@ -679,6 +679,12 @@ public class FogDevice extends PowerDatacenter {
         if (getName().equals("cloud")) {
             updateCloudTraffic();
         }
+        
+        int parentID = getParentId();
+        
+        if(parentID == -1) {
+        	System.out.println("Não tem pai");
+        }
 		
 		/*if(getName().equals("d-0") && tuple.getTupleType().equals("_SENSOR")){
 			System.out.println(++numClients);
