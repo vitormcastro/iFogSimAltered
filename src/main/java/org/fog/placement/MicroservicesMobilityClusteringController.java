@@ -129,7 +129,7 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
         	 
         	 System.out.println("Aplication" + key + " - Packet loss count: " + percentPacketLoss + "%");
         	 
-        	
+        	 System.out.println("Aplication" + key + " - Total Packet: " + tp);
              /*System.out.println("PACKET LOSS COUNT PER MODULE");
              
              for(String moduleName : app.GetModulePacketLossCount().keySet()) {
@@ -285,7 +285,9 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
         		 parentReference.put(fogDevice.getId(), -1);
         		 if(prevParent != null) {
                 	 prevParent.removeChild(fogDevice.getId());
-                }    
+                	 removeOrchestratorNode(fogDevice);
+        		 }    
+        		 fogDevice.setParentId(-1);
         	}
         	
             
@@ -301,7 +303,11 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
             if(((MicroserviceFogDevice)newParent).getDeviceType().equals(MicroserviceFogDevice.FON)){
                 int currentFon = ((MicroserviceFogDevice)fogDevice).getFonId();
                 if(currentFon!=parentId) {
-                    ((MicroserviceFogDevice)getFogDeviceById(currentFon)).removeMonitoredDevice(fogDevice);
+                	
+                	if(currentFon != -1) {
+                		 ((MicroserviceFogDevice)getFogDeviceById(currentFon)).removeMonitoredDevice(fogDevice);
+                	}
+                   
                     ((MicroserviceFogDevice) fogDevice).setFonID(parentId);
                     ((MicroserviceFogDevice)getFogDeviceById(parentId)).addMonitoredDevice(fogDevice);
                     System.out.println("Orchestrator Node for device : " + fogDevice.getId() + " updated to " + parentId);
@@ -315,21 +321,33 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
             }
         }
     }
+    
+    private void removeOrchestratorNode(FogDevice fogDevice) {
+    	int currentFon = ((MicroserviceFogDevice)fogDevice).getFonId();
+    	((MicroserviceFogDevice) fogDevice).setFonID(-1);
+    	((MicroserviceFogDevice)getFogDeviceById(currentFon)).removeMonitoredDevice(fogDevice);
+    }
+
 
     private void updateRoutingTable(FogDevice fogDevice) {
 
         for (FogDevice f : fogDevices) {
             if (f.getId() != fogDevice.getId()) {
                 // for mobile device update all to parent
-                ((MicroserviceFogDevice) fogDevice).updateRoutingTable(f.getId(), fogDevice.getParentId());
+            	((MicroserviceFogDevice) fogDevice).updateRoutingTable(f.getId(), fogDevice.getParentId());
 
-                ////for other update route to mobile based on route to parent
-                int nextId = ((MicroserviceFogDevice) f).getRoutingTable().get(fogDevice.getParentId());
-                if (f.getId() != nextId)
-                    ((MicroserviceFogDevice) f).updateRoutingTable(fogDevice.getId(), nextId);
-                else
-                    ((MicroserviceFogDevice) f).updateRoutingTable(fogDevice.getId(), fogDevice.getId());
+                if(fogDevice.getParentId() == -1) {
+                	((MicroserviceFogDevice) f).updateRoutingTable(fogDevice.getId(), fogDevice.getId());
+                }
+                else {
+                	 int nextId = ((MicroserviceFogDevice) f).getRoutingTable().get(fogDevice.getParentId());
+                     if (f.getId() != nextId)
+                         ((MicroserviceFogDevice) f).updateRoutingTable(fogDevice.getId(), nextId);
+                     else
+                         ((MicroserviceFogDevice) f).updateRoutingTable(fogDevice.getId(), fogDevice.getId());
+                }
             }
+               
         }
     }
 
@@ -427,10 +445,7 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
         	if(childs != null && !childs.isEmpty()) {
         		System.out.println("Here!");
         	}
-        }
-        
-
-        
+        }             
 
         return migratingModules;
     }

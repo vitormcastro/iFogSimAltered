@@ -212,7 +212,16 @@ public class ClusteredMicroservicePlacementLogic implements MicroservicePlacemen
         Map<PlacementRequest, Integer> deviceToPlace = new HashMap<>();
         //initiate with the  parent of the client device for this
         for (PlacementRequest placementRequest : placementRequests) {
-            deviceToPlace.put(placementRequest, getDevice(placementRequest.getGatewayDeviceId()).getParentId());
+        	
+        	FogDevice fd = getDevice(placementRequest.getGatewayDeviceId());
+        	
+        	if(fd!= null) {
+        		deviceToPlace.put(placementRequest, fd.getParentId());
+        	} else {
+        		deviceToPlace.put(placementRequest, -1);
+        	}
+        	
+            
 
             // already placed modules
             mappedMicroservices.put(placementRequest.getPlacementRequestId(), new HashMap<>(placementRequest.getPlacedMicroservices()));
@@ -326,7 +335,7 @@ public class ClusteredMicroservicePlacementLogic implements MicroservicePlacemen
                             toPlace.remove(placementRequest);
                     }
                 } else {
-                    if (toPlace.containsKey(placementRequest)) {
+                    if (toPlace.containsKey(placementRequest) && clusterNode.containsKey(placementRequest)) {
                         int clusterDeviceId = clusterNode.get(placementRequest);
                         FogDevice device = getDevice(clusterDeviceId);
                         List<Integer> clusterDeviceIds = ((MicroserviceFogDevice) device).getClusterMembers();
@@ -421,6 +430,8 @@ public class ClusteredMicroservicePlacementLogic implements MicroservicePlacemen
                         }
                         if (toPlace.get(placementRequest).isEmpty())
                             toPlace.remove(placementRequest);
+                    } else {
+                    	return;
                     }
                 }
             }

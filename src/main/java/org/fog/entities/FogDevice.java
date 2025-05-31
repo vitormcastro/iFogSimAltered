@@ -515,6 +515,11 @@ public class FogDevice extends PowerDatacenter {
                         Application application = getApplicationMap().get(tuple.getAppId());
                         Logger.debug(getName(), "Completed execution of tuple " + tuple.getCloudletId() + "on " + tuple.getDestModuleName());
                         List<Tuple> resultantTuples = application.getResultantTuples(tuple.getDestModuleName(), tuple, getId(), vm.getId());
+                        
+                        if(resultantTuples.size() == 0 && getParentId() != -1) {
+                        	application.AddLossPacket(tuple.getDestModuleName());
+                        }
+                        
                         for (Tuple resTuple : resultantTuples) {
                             resTuple.setModuleCopyMap(new HashMap<String, Integer>(tuple.getModuleCopyMap()));
                             resTuple.getModuleCopyMap().put(((AppModule) vm).getName(), vm.getId());

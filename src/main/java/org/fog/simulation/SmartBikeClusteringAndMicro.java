@@ -53,7 +53,7 @@ public class SmartBikeClusteringAndMicro {
     
     static boolean CLOUD = false;
 
-    static double SENSOR_TRANSMISSION_TIME = 10;
+    static double SENSOR_TRANSMISSION_TIME = 30;
     static int numberOfMobileUser =30;
     
   //cluster link latency 2ms
@@ -160,7 +160,7 @@ public class SmartBikeClusteringAndMicro {
          * Defining the input-output relationships (represented by selectivity) of the application modules.
          */
         application.addTupleMapping("clientModule", "SENSOR", "RAW_DATA", new FractionalSelectivity(0.9));
-        application.addTupleMapping("mService1", "RAW_DATA", "PROCESSED_DATA", new FractionalSelectivity(0.99));
+        application.addTupleMapping("mService1", "RAW_DATA", "PROCESSED_DATA", new FractionalSelectivity(1));
        
         application.setSpecialPlacementInfo("mService2", "cloud");
         if (CLOUD) {

@@ -291,16 +291,21 @@ public class Application {
 						tuples.add(tuple);
 					}
 				} else {
+					/*
 					int plc = GetPacketLossCount();
 					plc++;
 					SetPacketLossCount(plc);
+					
+					int tp = GetTotalPacket();
+					tp++;
+					SetTotalPacket(tp);
 					
 					if(!GetModulePacketLossCount().containsKey(moduleName)) {
 						GetModulePacketLossCount().put(moduleName, 0);
 					}
 					
 					GetModulePacketLossCount().put(moduleName, GetModulePacketLossCount().getOrDefault(moduleName, 0) +1);
-					
+					*/
 				}
 				
 				
@@ -312,6 +317,22 @@ public class Application {
 			}
 		}
 		return tuples;
+	}
+	
+	public void AddLossPacket(String moduleName) {
+		int plc = GetPacketLossCount();
+		plc++;
+		SetPacketLossCount(plc);
+		
+		int tp = GetTotalPacket();
+		tp++;
+		SetTotalPacket(tp);
+		
+		if(!GetModulePacketLossCount().containsKey(moduleName)) {
+			GetModulePacketLossCount().put(moduleName, 0);
+		}
+		
+		GetModulePacketLossCount().put(moduleName, GetModulePacketLossCount().getOrDefault(moduleName, 0) +1);
 	}
 	
 	/**
