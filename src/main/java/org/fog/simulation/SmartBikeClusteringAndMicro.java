@@ -159,7 +159,7 @@ public class SmartBikeClusteringAndMicro {
         /*
          * Defining the input-output relationships (represented by selectivity) of the application modules.
          */
-        application.addTupleMapping("clientModule", "SENSOR", "RAW_DATA", new FractionalSelectivity(0.9));
+        application.addTupleMapping("clientModule", "SENSOR", "RAW_DATA", new FractionalSelectivity(1));
         application.addTupleMapping("mService1", "RAW_DATA", "PROCESSED_DATA", new FractionalSelectivity(1));
        
         application.setSpecialPlacementInfo("mService2", "cloud");

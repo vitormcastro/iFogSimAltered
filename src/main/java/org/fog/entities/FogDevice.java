@@ -518,6 +518,8 @@ public class FogDevice extends PowerDatacenter {
                         
                         if(resultantTuples.size() == 0 && getParentId() != -1) {
                         	application.AddLossPacket(tuple.getDestModuleName());
+                        } else if (resultantTuples.size() > 0 && getParentId() == -1 && !getName().equals("cloud")) {
+                        	application.AddLossPacket("sem Pai");
                         }
                         
                         for (Tuple resTuple : resultantTuples) {

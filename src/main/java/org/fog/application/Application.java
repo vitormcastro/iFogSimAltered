@@ -333,6 +333,12 @@ public class Application {
 		}
 		
 		GetModulePacketLossCount().put(moduleName, GetModulePacketLossCount().getOrDefault(moduleName, 0) +1);
+	
+		if(!GetModulePacketTotalCount().containsKey(moduleName)) {
+			GetModulePacketTotalCount().put(moduleName, 0);
+		}
+		
+		GetModulePacketTotalCount().put(moduleName, GetModulePacketTotalCount().getOrDefault(moduleName, 0) +1);
 	}
 	
 	/**

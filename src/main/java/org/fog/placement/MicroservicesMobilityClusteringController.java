@@ -130,16 +130,16 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
         	 System.out.println("Aplication" + key + " - Packet loss count: " + percentPacketLoss + "%");
         	 
         	 System.out.println("Aplication" + key + " - Total Packet: " + tp);
-             /*System.out.println("PACKET LOSS COUNT PER MODULE");
+             System.out.println("PACKET LOSS COUNT PER MODULE");
              
              for(String moduleName : app.GetModulePacketLossCount().keySet()) {
-            	 int mnplc = app.GetModulePacketLossCount().get(moduleName);
-            	 int mnptc = app.GetModulePacketTotalCount().get(moduleName);
+            	 Integer mnplc = app.GetModulePacketLossCount().get(moduleName);
+            	 //Integer mnptc = app.GetModulePacketTotalCount().get(moduleName);
             	 
-            	 double percentModuleNamePacketLoss = ((double)mnplc/mnptc)*100;
+            	 //double percentModuleNamePacketLoss = ((double)mnplc/mnptc)*100;
             	 
-            	 System.out.println("Module Name" + moduleName + " - Packet loss count: " + percentModuleNamePacketLoss+"%");
-             }*/
+            	 System.out.println("Module Name" + moduleName + " - Packet loss count: " + mnplc);
+             }
              
              
          }

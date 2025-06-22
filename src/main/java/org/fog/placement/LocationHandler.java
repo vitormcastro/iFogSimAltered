@@ -186,7 +186,7 @@ public class LocationHandler {
 			
 		}
 		
-		if(parentLevel == 2 && parentInstanceId == -1) {
+		if( parentInstanceId == -1) {
 			System.out.println("não foi possivel encontrar um parente");
 		}
 		
