@@ -83,16 +83,19 @@ public class ShortestPathRoutingGenerator {
             for (int column = 0; column < size; column++) {
                 int sourceId = fogDevices.get(row).getId();
                 int destId = fogDevices.get(column).getId();
+                
+                int idRouting = routingMatrix[row][column];
+                
                 if (routing.containsKey(sourceId)) {
                     routing.get(sourceId).put(destId, routingMatrix[row][column]);
-                    routingString.get(fogDevices.get(row).getName()).put(fogDevices.get(column).getName(), getFogDeviceById(routingMatrix[row][column], fogDevices).getName());
+                    routingString.get(fogDevices.get(row).getName()).put(fogDevices.get(column).getName(), idRouting == -1? "NoNode" : getFogDeviceById(routingMatrix[row][column], fogDevices).getName());
                 } else {
                     Map<Integer, Integer> route = new HashMap<>();
                     route.put(destId, routingMatrix[row][column]);
                     routing.put(sourceId, route);
 
                     Map<String, String> routeS = new HashMap<>();
-                    routeS.put(fogDevices.get(column).getName(), getFogDeviceById(routingMatrix[row][column], fogDevices).getName());
+                    routeS.put(fogDevices.get(column).getName(), idRouting == -1? "NoNode" : getFogDeviceById(routingMatrix[row][column], fogDevices).getName());
                     routingString.put(fogDevices.get(row).getName(), routeS);
                 }
             }
