@@ -55,7 +55,7 @@ public class LocationHandler {
 	 * Checks if a child node is within the maximum communication range of its parent node.
 	 */
 	public Boolean IsNodeInParentRange(int resourceId, int parentResourceId, double time) {
-		if(time == References.INIT_TIME) {
+		if(time == References.INIT_TIME || !Config.useMinDistanceRule) {
 			return false;
 		}
 		

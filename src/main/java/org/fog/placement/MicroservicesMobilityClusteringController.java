@@ -138,7 +138,7 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
             	 
             	 //double percentModuleNamePacketLoss = ((double)mnplc/mnptc)*100;
             	 
-            	 System.out.println("Module Name" + moduleName + " - Packet loss count: " + mnplc);
+            	 System.out.println("Module Name " + moduleName + " - Packet loss count: " + mnplc);
              }
              
              

@@ -139,7 +139,7 @@ public class DataParser {
 		for (int i = 0; i < numOfLevels; i++)
 			resouresOnLevels[i] = new ArrayList<String>();
 
-		BufferedReader csvReader = new BufferedReader(new FileReader(".\\dataset\\edgeResources-UFABCDatasetExpandido.csv"));//".\\dataset\\edgeResources-UFABCDatasetExpandido.csv"));
+		BufferedReader csvReader = new BufferedReader(new FileReader(".\\dataset\\edgeResources-UFABCDatasetJustMFog.csv"));//".\\dataset\\edgeResources-UFABCDatasetExpandido.csv"));
 		String row;
 		while ((row = csvReader.readLine()) != null) {
 			String[] data = row.split(",");
