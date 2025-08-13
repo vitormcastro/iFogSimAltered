@@ -28,5 +28,6 @@ public class Config {
 
 	public static final int TRANSMISSION_START_DELAY = 50;
 	
-	public static Boolean useMinDistanceRule = true;
+	public static Boolean useMinDistanceRule = false
+			;
 }
