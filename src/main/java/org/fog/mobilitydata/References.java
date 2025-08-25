@@ -24,7 +24,7 @@ public class References {
 	public static double MinMobilitySpeed = 1; //
 	public static double MaxMobilitySpeed = 2; //
 	public static double environmentLimit = 6371; // shows the maximum latitude and longitude of the environment. Currently it is set based on radius of the Earth (6371 KM)
-	public static final int movementQuantity = 200; 
+	public static final int movementQuantity = 1000; 
 	
 	
 }

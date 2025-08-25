@@ -519,7 +519,7 @@ public class FogDevice extends PowerDatacenter {
                         if(resultantTuples.size() == 0 && getParentId() != -1) {
                         	application.AddLossPacket(tuple.getDestModuleName());
                         } else if (resultantTuples.size() > 0 && getParentId() == -1 && !getName().equals("cloud")) {
-                        	application.AddLossPacket("sem Pai");
+                        	application.AddLossPacket("DisconnectedNode");
                         }
                         
                         for (Tuple resTuple : resultantTuples) {
@@ -686,13 +686,7 @@ public class FogDevice extends PowerDatacenter {
         if (getName().equals("cloud")) {
             updateCloudTraffic();
         }
-        
-        int parentID = getParentId();
-        
-        if(parentID == -1) {
-        	System.out.println("Não tem pai");
-        }
-		
+	
 		/*if(getName().equals("d-0") && tuple.getTupleType().equals("_SENSOR")){
 			System.out.println(++numClients);
 		}*/

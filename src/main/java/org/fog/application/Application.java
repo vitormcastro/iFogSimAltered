@@ -24,6 +24,7 @@ public class Application {
 	private int userId;
 	private GeoCoverage geoCoverage;
 	
+	private int parentNodeChanges;
 	private int packetLossCount;
 	private int totalPacket;
 	private Map<String,Integer> modulePacketLossCount;
@@ -178,6 +179,14 @@ public class Application {
 		}
 		SetModulePacketLossCount(new HashMap<String,Integer>());
 		SetModulePacketTotalCount(new HashMap<String,Integer>());
+	}
+	
+	public int GetParentNodeChanges() {
+		return parentNodeChanges;
+	}
+	
+	public void SetParentNodeChanges(int value) {
+		parentNodeChanges = value;
 	}
 	
 	public int GetPacketLossCount() {

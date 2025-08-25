@@ -103,7 +103,8 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
                 printCostDetails();
                 printNetworkUsageDetails();
                 printMigrationDelayDetails();
-                printQoSDetails();
+                printParentChangeNodes();
+                //printQoSDetails();
                 printPacketLossCount();
                 System.exit(0);
                 break;
@@ -111,6 +112,15 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
                 super.processEvent(ev);
                 break;
         }
+    }
+    
+    private void printParentChangeNodes() {
+
+    	for (Application app : applications.values()) {
+
+    		 System.out.println("Parent change nodes = " + app.GetParentNodeChanges());
+    	}
+
     }
 
     private void printPacketLossCount() {
@@ -130,9 +140,17 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
         	 System.out.println("Aplication" + key + " - Packet loss count: " + percentPacketLoss + "%");
         	 
         	 System.out.println("Aplication" + key + " - Total Packet: " + tp);
-             System.out.println("PACKET LOSS COUNT PER MODULE");
-             
+        	 
+        	 boolean first = true;
+
              for(String moduleName : app.GetModulePacketLossCount().keySet()) {
+            	 
+            	 if(first) {
+            		 first = false;
+                	 
+                     System.out.println("PACKET LOSS COUNT PER MODULE");
+            	 }
+            	 
             	 Integer mnplc = app.GetModulePacketLossCount().get(moduleName);
             	 //Integer mnptc = app.GetModulePacketTotalCount().get(moduleName);
             	 
@@ -197,6 +215,17 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
             System.out.println("Child " + fogDevice.getName() + "\t----->\tParent " + parent.getName());
         }
     }
+    
+    private void addParentNodeChanges() {
+    	for (Application app : applications.values()) {
+    		int parentChanges = app.GetParentNodeChanges();
+    		
+    		parentChanges += 1;
+    		
+    		app.SetParentNodeChanges(parentChanges);
+    	}
+    	
+    }
 
     private void processMobility(SimEvent ev) {
 
@@ -225,8 +254,10 @@ public class MicroservicesMobilityClusteringController extends MicroservicesCont
                         List<Integer> newParentPath = getPathsToCloud(newParent.getId());
                         List<Integer> prevParentPath = getPathsToCloud(prevParent.getId());
                         commonAncestor = determineAncestor(newParentPath, prevParentPath);
-                	}                             
+                	}        
 
+                	addParentNodeChanges();
+                	
                     fogDevice.setParentId(newParent.getId());
                     System.out.println("Child " + fogDevice.getName() + "\t----->\tParent " + newParent.getName());
                     newParent.getChildToLatencyMap().put(fogDevice.getId(), fogDevice.getUplinkLatency());
