@@ -291,6 +291,7 @@ public class MicroservicesController extends SimEntity {
     }
 
     protected void printTimeDetails() {
+    	 
         System.out.println("=========================================");
         System.out.println("============== RESULTS ==================");
         System.out.println("=========================================");
