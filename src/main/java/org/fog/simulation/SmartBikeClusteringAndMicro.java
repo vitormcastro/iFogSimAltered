@@ -192,7 +192,7 @@ public class SmartBikeClusteringAndMicro {
             randMobilityGenerator.createRandomData(mobilityModel, i + 1, datasetReference, renewDataset);
         }
     }
-    //Module Name sem Pai - Packet loss count: 0
+    //Module Name DisconnectedNode - Packet loss count: 0
     private static void createMobileUser(int userId, Application app, String datasetReference) throws IOException {
 
         for (int id = 1; id <= numberOfMobileUser; id++)
